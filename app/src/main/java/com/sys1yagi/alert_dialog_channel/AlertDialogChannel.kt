@@ -2,10 +2,9 @@ package com.sys1yagi.alert_dialog_channel
 
 import android.content.Context
 import android.support.v7.app.AlertDialog
-import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.channels.sendBlocking
 
 class AlertDialogChannel {
     enum class Result {
@@ -20,14 +19,10 @@ class AlertDialogChannel {
                 .setTitle("OK?")
                 .setMessage("Hello")
                 .setPositiveButton("OK") { _, _ ->
-                    launch(UI) {
-                        channel.send(Result.OK)
-                    }
+                    channel.sendBlocking(Result.OK)
                 }
                 .setNegativeButton("Cancel") { _, _ ->
-                    launch(UI) {
-                        channel.send(Result.CANCEL)
-                    }
+                    channel.sendBlocking(Result.CANCEL)
                 }
                 .create()
                 .show()
